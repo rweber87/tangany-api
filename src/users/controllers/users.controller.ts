@@ -3,15 +3,13 @@ import { sendSuccess, sendError } from '../../utils/response.handlers';
 import UsersService from '../services/users.service';
 
 export default class UsersController {
-  private usersService: UsersService;
-
-  constructor(usersService: UsersService) {
-    this.usersService = usersService;
+  constructor(private service: UsersService) {
+    this.service = service;
   }
 
   listUsers = async (req: Request, res: Response) => {
     try {
-      const users = await this.usersService.getAllUsers();
+      const users = await this.service.getAllUsers();
       sendSuccess(res, users, 'List of users');
     } catch (error) {
       console.error(`Users Controller ${error}`);
@@ -22,7 +20,7 @@ export default class UsersController {
   getUserById = async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.userId, 10);
-      const user = await this.usersService.getUserById(userId);
+      const user = await this.service.getUserById(userId);
       if (!user) {
         sendError(res, null, 'User not found', 404);
         return;
@@ -35,7 +33,7 @@ export default class UsersController {
 
   createUser = async (req: Request, res: Response) => {
     try {
-      const newUser = await this.usersService.createUser(req.body);
+      const newUser = await this.service.createUser(req.body);
       sendSuccess(res, newUser, 'New user data');
     } catch (err) {
       sendError(res, null, 'Failed to create new user', 500);
@@ -45,7 +43,7 @@ export default class UsersController {
   deleteUser = async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.userId, 10);
-      const user = await this.usersService.deleteUser(userId);
+      const user = await this.service.deleteUser(userId);
       sendSuccess(res, user, 'User successfully deleted!');
     } catch (err) {
       sendError(res, null, 'Failed to delete user', 500);
