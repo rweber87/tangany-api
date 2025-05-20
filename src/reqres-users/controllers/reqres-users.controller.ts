@@ -3,7 +3,7 @@ import { ReqResUserService } from '../services/reqres-users.service';
 import { sendSuccess, sendError } from '../../utils/response.handlers';
 
 export class ReqResUserController {
-  constructor(private readonly service: ReqResUserService) {}
+  constructor(private service: ReqResUserService) {}
 
   listUsers = async (req: Request, res: Response) => {
     try {
@@ -11,7 +11,7 @@ export class ReqResUserController {
       const users = await this.service.getUsers(page);
       sendSuccess(res, users, 'List of users');
     } catch (error) {
-      sendError(res, null, 'Failed to fetch ReqRes Users', 500);
+      sendError(res, error, 'Failed to fetch ReqRes Users', 500);
     }
   };
 
@@ -20,8 +20,7 @@ export class ReqResUserController {
       const user = await this.service.createUser(req.body);
       sendSuccess(res, user, 'Created new reqres user', 201);
     } catch (error) {
-      console.log('rcw error', error);
-      sendError(res, null, 'Failed to create new ReqRes Users', 500);
+      sendError(res, error, 'Failed to create new ReqRes User', 500);
     }
   };
 
@@ -31,7 +30,7 @@ export class ReqResUserController {
       const user = await this.service.getUserById(userId);
       sendSuccess(res, user, 'Created new reqres user', 201);
     } catch (error) {
-      sendError(res, null, 'Failed to fetch ReqRes User', 500);
+      sendError(res, error, 'Failed to fetch ReqRes User', 500);
     }
   };
 }

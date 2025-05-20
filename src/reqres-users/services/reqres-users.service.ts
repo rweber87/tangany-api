@@ -44,7 +44,11 @@ export class ReqResUserService {
       return cached;
     }
 
-    const response = await axios.get(`${this.api}/${userId}`);
+    const response = await axios.get(`${this.api}/${userId}`, {
+      headers: {
+        'x-api-key': process.env.REQ_RES_API_KEY,
+      },
+    });
 
     return response.data;
   }
